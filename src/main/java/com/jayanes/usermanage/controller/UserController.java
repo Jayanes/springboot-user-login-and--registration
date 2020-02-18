@@ -97,7 +97,7 @@ public class UserController {
                 return x.getRoles().stream().allMatch(y-> y.getId() ==roles.get().getId());
             }).collect(Collectors.toList());
 
-            return ResponseEntity.ok(new ApiResponse(true,result.stream().map(x->x.getName()),"Successfully account activated"));
+            return ResponseEntity.ok(new ApiResponse(true,result.stream().map(x->x.getName()),"Successfully data retrieved"));
         }catch (Exception e){
             return ResponseEntity.ok(new ApiResponse(false,"",e.getMessage()));
         }
