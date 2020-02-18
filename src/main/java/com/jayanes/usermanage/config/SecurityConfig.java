@@ -85,9 +85,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/api/auth/**")
                 .permitAll()
+                .antMatchers("/api/user/get-all-user")
+                .permitAll()
                 .antMatchers("/api/user/checkUsernameAvailability", "/api/user/checkEmailAvailability")
                 .permitAll()
-                .antMatchers("/api/user/get-all-locked-account","/api/user/get-all-pending-account","/api/user/unlock_account_by_id")
+                .antMatchers("/api/user/get-all-locked-account","/api/user/get-all-pending-account","/api/user/unlock_account_by_id","/api/user/activate_pending_account_by_id")
                 .hasAuthority(String.valueOf(ROLE_ADMIN))
                 .anyRequest()
                 .authenticated();
