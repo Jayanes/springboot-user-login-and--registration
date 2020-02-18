@@ -1,6 +1,7 @@
 package com.jayanes.usermanage.model;
 
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -42,15 +43,39 @@ public class User extends DateAudit{
     @Size(max = 100)
     private String password;
 
+
+    @ColumnDefault("0")
     private int loginAttemptCount;
 
-    private boolean isLocked;
+
+    private int status;
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+
+
+    public User() {
+    }
+
+    public User(String name, String username, String email, String password) {
+        this.name=name;
+        this.username=username;
+        this.email=email;
+        this.password=password;
+    }
 
     public Long getId() {
         return id;
@@ -98,14 +123,6 @@ public class User extends DateAudit{
 
     public void setLoginAttemptCount(int loginAttemptCount) {
         this.loginAttemptCount = loginAttemptCount;
-    }
-
-    public boolean isLocked() {
-        return isLocked;
-    }
-
-    public void setLocked(boolean locked) {
-        isLocked = locked;
     }
 
     public Set<Role> getRoles() {

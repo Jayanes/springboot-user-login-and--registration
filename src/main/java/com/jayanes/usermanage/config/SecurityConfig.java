@@ -20,6 +20,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.jayanes.usermanage.model.RoleName.ROLE_ADMIN;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -85,8 +87,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/api/user/checkUsernameAvailability", "/api/user/checkEmailAvailability")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/polls/**", "/api/users/**")
-                .permitAll()
+                .antMatchers("/api/user/get-all-locked-account","/api/user/get-all-pending-account","/api/user/unlock_account_by_id")
+                .hasAuthority(String.valueOf(ROLE_ADMIN))
                 .anyRequest()
                 .authenticated();
 
