@@ -104,4 +104,43 @@ public class UserController {
 
     }
 
+
+    @PostMapping("/edit")
+    public ResponseEntity<?> editUser(@RequestBody User users){
+        try {
+            Optional<User> user= userRepository.findById(users.getId());
+           if (users.getName() !=null)
+               user.get().setName(users.getName());
+           if (users.getEmail() !=null)
+            user.get().setEmail(users.getEmail());
+
+            userRepository.save(user.get());
+            return ResponseEntity.ok(new ApiResponse(true,"","Successfully account updated"));
+        }catch (Exception e){
+            return ResponseEntity.ok(new ApiResponse(false,"",e.getMessage()));
+        }
+
+    }
+
+
+    @PostMapping("/delete")
+    public ResponseEntity<?> delete(@RequestBody User users){
+        try {
+            Optional<User> user= userRepository.findById(users.getId());
+            Optional<Role> roles= roleRepository.findByName(ROLE_ADMIN);
+            if(user.get().getRoles().stream().allMatch(y-> y.getId() ==roles.get().getId())){
+                return ResponseEntity.ok(new ApiResponse(false,"","Sorry!,you don't have permission to delete this account"));
+
+            }else {
+                user.get().setStatus(1);
+                userRepository.save(user.get());
+                return ResponseEntity.ok(new ApiResponse(true,"","Successfully account deleted"));
+
+            }
+        }catch (Exception e){
+            return ResponseEntity.ok(new ApiResponse(false,"",e.getMessage()));
+        }
+
+    }
+
 }

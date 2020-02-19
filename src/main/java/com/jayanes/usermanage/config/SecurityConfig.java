@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static com.jayanes.usermanage.model.RoleName.ROLE_ADMIN;
+import static com.jayanes.usermanage.model.RoleName.ROLE_USER_MANAGE;
 
 @Configuration
 @EnableWebSecurity
@@ -91,6 +92,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/api/user/get-all-locked-account","/api/user/get-all-pending-account","/api/user/unlock_account_by_id","/api/user/activate_pending_account_by_id")
                 .hasAuthority(String.valueOf(ROLE_ADMIN))
+                .antMatchers("/api/user/edit","/api/user/delete")
+                .hasAnyAuthority(String.valueOf(ROLE_ADMIN),String.valueOf(ROLE_USER_MANAGE))
                 .anyRequest()
                 .authenticated();
 
